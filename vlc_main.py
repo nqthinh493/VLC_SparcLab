@@ -53,19 +53,22 @@ for i in classes:
         coefficent = w/max_value
         
         # Plot 1
-        plt.figure(figsize=(24, 4))
-        plt.subplot(1, 3, 1)
+        plt.figure(figsize=(20, 11))
+        plt.subplot(2, 2, 1)
         plt.title("Origin Image")
         plt.imshow(img_org)
         plt.axvline(x = k, color = 'r', linestyle = '--')
-        plt.subplot(1, 3, 2)
+        plt.subplot(2, 2, 2)
         plt.title("Gray Image")
  
         plt.imshow(imgGray, cmap= 'gray')
         plt.plot(B, y)
         plt.plot(B*coefficent, y)
+        plt.subplot(2, 2, 3)
+        plt.title("Histogram average of column")
+        plt.plot(average_line_oy, y)
         
-        plt.subplot(1, 3, 3)
+        plt.subplot(2, 2, 4)
         plt.title("Histogram at column " + str(k))
         plt.plot(B, y)
            
