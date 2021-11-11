@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import os
 from matplotlib.image import imread
 directory ='data'
-classes =['data-img']
+classes =['data-test']
 os.path.abspath(os.getcwd())
 
 def column(matrix, i):
