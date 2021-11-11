@@ -46,7 +46,7 @@ for i in classes:
 
         k = int(input())
         B = A[:,k]
-        k = str(k)
+    
         
         max_value = np.max(B)
         print(max_value)
@@ -55,15 +55,18 @@ for i in classes:
         # Plot 1
         plt.figure(figsize=(24, 4))
         plt.subplot(1, 3, 1)
+        plt.title("Origin Image")
         plt.imshow(img_org)
-  
+        plt.axvline(x = k, color = 'r', linestyle = '--')
         plt.subplot(1, 3, 2)
+        plt.title("Gray Image")
  
         plt.imshow(imgGray, cmap= 'gray')
         plt.plot(B, y)
         plt.plot(B*coefficent, y)
         
         plt.subplot(1, 3, 3)
+        plt.title("Histogram at column " + str(k))
         plt.plot(B, y)
            
             
