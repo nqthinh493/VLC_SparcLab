@@ -100,14 +100,13 @@ for i in classes:
         # plt.axvline(x = k, color = 'r', linestyle = '--')
         plt.subplot(2, 2, 1)
         plt.title("Gray Image")
- 
+        plt.axvline(x = k, color = 'r', linestyle = '--')
         plt.imshow(imgGray, cmap= 'gray')
-        plt.plot(B, y)
-        plt.plot(B*coefficent, y)
         plt.subplot(2, 2, 2)
 
         plt.title("Histogram at column " + str(k))
         plt.plot(B, y)
+        plt.plot(B*coefficent, y)
         plt.subplot(2, 2, 3)
         plt.title("apply median filter")
         plt.plot(medfilt(B,3), y)
@@ -116,9 +115,16 @@ for i in classes:
         # plt.plot(meanfilt(medfilt(B,3),5), y)
         filterB = meanfilt(medfilt(B,3),5)
         x = filterB
-        peaks, _ = find_peaks(x, height=0)
+        peaks, _ = find_peaks(x, height=0, distance=10)
         plt.plot(filterB, y)
         plt.plot(x[peaks], peaks, "x")
+
+        #local minimum
+        x_cv = x* (-1)
+        
+        peaks_cv, _ = find_peaks(x_cv, height=-40, distance=10)
+        plt.plot(x[peaks_cv], peaks_cv, "x")
+        print(peaks_cv)
         plt.show()  
 
     break
