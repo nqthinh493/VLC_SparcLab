@@ -111,19 +111,19 @@ for i in classes:
         plt.title("apply median filter")
         plt.plot(medfilt(B,3), y)
         plt.subplot(2, 2, 4)
-        plt.title("apply mean filter")
+        plt.title("apply mean filter & find local extrema")
         # plt.plot(meanfilt(medfilt(B,3),5), y)
-        filterB = meanfilt(medfilt(B,3),5)
+        filterB = meanfilt(medfilt(B,3),7)
         x = filterB
         peaks, _ = find_peaks(x, height=0, distance=10)
         plt.plot(filterB, y)
-        plt.plot(x[peaks], peaks, "x")
+        plt.plot(x[peaks], peaks, "o")
 
         #local minimum
         x_cv = x* (-1)
         
         peaks_cv, _ = find_peaks(x_cv, height=-40, distance=10)
-        plt.plot(x[peaks_cv], peaks_cv, "x")
+        plt.plot(x[peaks_cv], peaks_cv, "o", 4)
         print(peaks_cv)
         plt.show()  
 
