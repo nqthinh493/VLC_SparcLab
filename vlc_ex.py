@@ -112,7 +112,7 @@ for i in classes:
         plt.plot(medfilt(B,3), y)
         plt.subplot(2, 2, 4)
         plt.title("apply mean filter")
-        plt.plot(meanfilt(medfilt(B,3),3), y)
+        plt.plot(meanfilt(medfilt(B,3),5), y)
         
 
            
