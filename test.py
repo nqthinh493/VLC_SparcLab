@@ -4,8 +4,9 @@ import cv2
 import matplotlib.pyplot as plt
 import os
 from matplotlib.image import imread
+from scipy.signal import find_peaks
 directory ='data'
-classes =['data-test']
+classes =['data-img']
 os.path.abspath(os.getcwd())
 
 def column(matrix, i):
@@ -70,7 +71,12 @@ for i in classes:
         
         plt.subplot(2, 2, 4)
         plt.title("Histogram at column " + str(k))
-        plt.plot(B, y)
+        # plt.plot(B, y)
+        x = B
+        peaks, _ = find_peaks(x, height=0)
+        plt.plot(y, B)
+        plt.plot(peaks, x[peaks],  "x")
+        plt.show()
            
             
         plt.show()

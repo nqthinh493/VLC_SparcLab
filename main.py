@@ -1,47 +1,32 @@
 
-# importing the module
-import cv2
- 
-# reading the video
-source = cv2.VideoCapture('../VLC_SparcLab/data/video/ss4000.mp4')
- 
-
-
 import numpy as np
 import cv2
+import time
 
 
 cap = cv2.VideoCapture('../VLC_SparcLab/data/video/ss4000.mp4')
 
 
-ret, frame1 = cap.read()
-ret, frame2 = cap.read()
-
 while cap.isOpened():
-    diff = cv2.absdiff(frame1, frame2)
-    gray = cv2.cvtColor(diff, cv2.COLOR_BGR2GRAY)
-    blur = cv2.GaussianBlur(gray, (5,5), 0)
-    _, thresh = cv2.threshold(blur, 20, 255, cv2.THRESH_BINARY)
-    dilate = cv2.dilate(thresh, None, iterations=3)
-    contours, _ = cv2.findContours(dilate, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    
+    ret, frame = cap.read()
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    gray = cv2.GaussianBlur(gray, (21, 21), 0)
+
+    width = int(cap.get(3))
+    height = int(cap.get(4))
+    image = np.zeros(gray.shape, np.uint8)
+    smaller_frame = cv2.resize(gray, (0, 0), fx = 0.5, fy = 0.5)
+    
+    image[:height//2, :width//2] = smaller_frame
+
+    image[:height//2, width//2:] = smaller_frame
 
 
-    for contour in contours:
-        (x, y, w, h) = cv2.boundingRect(contour)
+    
         
-        if cv2.contourArea(contour) < 10000:
-            continue
-        cv2.rectangle(frame1, (x, y), (x+w, y+h), (0, 255, 0), 2)
-        cv2.putText(frame1, "Status: {}".format('Movement'), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-
-    cv2.drawContours(frame1, contours, -1, (255, 0, 0), 1)
-
-    cv2.imshow('inter frame', frame1)
-
-    frame1 = frame2
-    ret, frame2 = cap.read()
-
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    cv2.imshow('inter frame', image)
+    if cv2.waitKey(30) & 0xFF == ord('q'):
         break
 
 

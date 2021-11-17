@@ -4,6 +4,7 @@ import cv2
 import matplotlib.pyplot as plt
 import os
 from matplotlib.image import imread
+from scipy.signal import find_peaks
 directory ='data'
 classes =['data-img']
 os.path.abspath(os.getcwd())
@@ -112,10 +113,12 @@ for i in classes:
         plt.plot(medfilt(B,3), y)
         plt.subplot(2, 2, 4)
         plt.title("apply mean filter")
-        plt.plot(meanfilt(medfilt(B,3),5), y)
-        
+        # plt.plot(meanfilt(medfilt(B,3),5), y)
+        filterB = meanfilt(medfilt(B,3),5)
+        x = filterB
+        peaks, _ = find_peaks(x, height=0)
+        plt.plot(filterB, y)
+        plt.plot(x[peaks], peaks, "x")
+        plt.show()  
 
-           
-            
-        plt.show()
     break
