@@ -1,4 +1,5 @@
 #Author: Nguyễn Quang Thịnh
+from matplotlib.colors import Colormap
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
@@ -53,6 +54,17 @@ def meanfilt(x, k):
         y[-j:,-(i+1)] = x[-1]
     return np.mean(y, axis=1)
 
+def Distance_Of_Adjacent_LocalExtrema(array):
+    DistanceArr = []
+    for i in range(len(array)):
+        
+        if i != 0:
+            Distance = array[i] - array[i-1]
+            DistanceArr.append(Distance)
+    return DistanceArr
+
+k = int(input())
+
 for i in classes:
     path = os.path.join(directory,i)
     for img in os.listdir(path):
@@ -84,7 +96,7 @@ for i in classes:
         n = len(A[:,1])
         y = np.linspace(0 , n, n, endpoint=False)
 
-        k = int(input())
+        
         B = A[:,k]
     
         
@@ -93,38 +105,56 @@ for i in classes:
         coefficent = w/max_value
         
         # Plot 1
-        plt.figure(figsize=(20, 11))
+        plt.figure(1, figsize=(20, 11))
         # plt.subplot(2, 2, 1)
         # plt.title("Origin Image")
         # plt.imshow(img_org)
         # plt.axvline(x = k, color = 'r', linestyle = '--')
         plt.subplot(2, 2, 1)
         plt.title("Gray Image")
-        plt.axvline(x = k, color = 'r', linestyle = '--')
+        plt.axvline(x = k, color = 'y', linestyle = '--')
         plt.imshow(imgGray, cmap= 'gray')
         plt.subplot(2, 2, 2)
 
-        plt.title("Histogram at column " + str(k))
+        plt.title("Histogram at column Matrix " + str(k))
         plt.plot(B, y)
-        plt.plot(B*coefficent, y)
+        # plt.plot(B*coefficent, y)
         plt.subplot(2, 2, 3)
-        plt.title("apply median filter")
-        plt.plot(medfilt(B,3), y)
-        plt.subplot(2, 2, 4)
-        plt.title("apply mean filter & find local extrema")
-        # plt.plot(meanfilt(medfilt(B,3),5), y)
+        plt.title("Median filtered & Mean filtered")
         filterB = meanfilt(medfilt(B,3),7)
+       
+        plt.plot(filterB, y)
+        plt.subplot(2, 2, 4)
+        plt.title("Local extrema")
+        # plt.plot(meanfilt(medfilt(B,3),5), y)
+        
         x = filterB
         peaks, _ = find_peaks(x, height=0, distance=10)
         plt.plot(filterB, y)
         plt.plot(x[peaks], peaks, "o")
 
         #local minimum
-        x_cv = x* (-1)
+        x_cv = x* (-1)  #convert 
         
         peaks_cv, _ = find_peaks(x_cv, height=-40, distance=10)
-        plt.plot(x[peaks_cv], peaks_cv, "o", 4)
+        plt.plot(x[peaks_cv], peaks_cv, "o")
+        print(peaks)
+        print(Distance_Of_Adjacent_LocalExtrema(peaks))
         print(peaks_cv)
-        plt.show()  
+        print(Distance_Of_Adjacent_LocalExtrema(peaks_cv))
+        
+        plt.legend()
+
+        plt.figure(2)
+
+        plt.plot(Distance_Of_Adjacent_LocalExtrema(peaks), linestyle='dashed', label="Distance of Adjacent Local Extrema - Max")
+        plt.plot(Distance_Of_Adjacent_LocalExtrema(peaks_cv), linestyle='dashed', label="Distance of Adjecent Local Extrema - Min")
+        plt.ylim(0, 100)
+        plt.legend()
+
+        plt.show()
+
+        
+
 
     break
