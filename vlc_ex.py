@@ -106,44 +106,52 @@ for i in classes:
         
         # Plot 1
         plt.figure(1, figsize=(20, 11))
-        # plt.subplot(2, 2, 1)
-        # plt.title("Origin Image")
-        # plt.imshow(img_org)
-        # plt.axvline(x = k, color = 'r', linestyle = '--')
         plt.subplot(2, 2, 1)
         plt.title("Gray Image")
+        plt.xlabel("Row Matrix") 
+        plt.ylabel("Colunm Matrix")
         plt.axvline(x = k, color = 'y', linestyle = '--')
         plt.imshow(imgGray, cmap= 'gray')
-        plt.subplot(2, 2, 2)
 
+
+        plt.subplot(2, 2, 2)
         plt.title("Histogram at column Matrix " + str(k))
+        plt.xlabel("Gray Value") 
+        plt.ylabel("Colunm Matrix " + str(k))
         plt.plot(B, y)
-        # plt.plot(B*coefficent, y)
+ 
+
+
         plt.subplot(2, 2, 3)
         plt.title("Median filtered & Mean filtered")
+        plt.xlabel("Gray Value") 
+        plt.ylabel("Colunm Matrix " + str(k))
         filterB = meanfilt(medfilt(B,3),7)
-       
         plt.plot(filterB, y)
+
+
         plt.subplot(2, 2, 4)
         plt.title("Local extrema")
+        plt.xlabel("Gray Value") 
+        plt.ylabel("Colunm Matrix " + str(k))
         # plt.plot(meanfilt(medfilt(B,3),5), y)
         
         x = filterB
         peaks, _ = find_peaks(x, height=0, distance=10)
         plt.plot(filterB, y)
-        plt.plot(x[peaks], peaks, "o")
+        plt.plot(x[peaks], peaks, "o", label="Local Extrema - Max")
 
         #local minimum
         x_cv = x* (-1)  #convert 
-        
         peaks_cv, _ = find_peaks(x_cv, height=-40, distance=10)
-        plt.plot(x[peaks_cv], peaks_cv, "o")
+        plt.plot(x[peaks_cv], peaks_cv, "o", label="Local Extrema - Min")
         print(peaks)
         print(Distance_Of_Adjacent_LocalExtrema(peaks))
         print(peaks_cv)
         print(Distance_Of_Adjacent_LocalExtrema(peaks_cv))
-        
         plt.legend()
+
+
 
         plt.figure(2)
 
